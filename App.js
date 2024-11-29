@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Button, Alert } from 'react-native';
+import { Paystack } from 'react-native-paystack-webview';
 
-export default function App() {
+function App() {
+  const [showPaystack, setShowPaystack] = useState(false);
+
+  const handlePayment = () => {
+    setShowPaystack(true); // Trigger Paystack payment when the button is pressed
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button
+        title="Pay with Paystack"
+        onPress={handlePayment} // Trigger payment process on button press
+      />
+      
+      {showPaystack && (
+        <Paystack
+          paystackKey="pk_test_f73c293f14c859435bc6fe2aa081938ac5326239"
+          amount={'25000.00'} // Amount in kobo (25000 = 250.00 NGN)
+          billingEmail="paystackwebview@something.com"
+          currency='ZAR'
+          activityIndicatorColor="green"
+          onCancel={(e) => {
+            Alert.alert('Payment Canceled', 'You have canceled the payment process.');
+            setShowPaystack(false); // Hide Paystack Webview on cancel
+          }}
+          onSuccess={(res) => {
+            Alert.alert('Payment Successful', `Transaction ID: ${res.transaction.reference}`);
+            setShowPaystack(false); // Hide Paystack Webview on success
+          }}
+          autoStart={true}
+        />
+      )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
