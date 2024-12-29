@@ -134,6 +134,8 @@ alert('Payment Successful! Thank you for your purchase.');
 
 
 ## Project File Structure
+<img width="219" alt="image" src="https://github.com/user-attachments/assets/a3935b4c-6874-4db4-af21-90860fb082c7" />
+
 
 ## Notes
 - For production, use live API keys instead of test keys.
